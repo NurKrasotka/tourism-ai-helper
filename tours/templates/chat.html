@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI Туристический Помощник</title>
+  <style>
+    body { font-family: sans-serif; padding: 30px; }
+    input, button { padding: 10px; font-size: 1rem; }
+    #response { margin-top: 20px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Спроси у AI-помощника</h1>
+  <input type="text" id="userInput" placeholder="Например: посоветуй тур в июле" size="50">
+  <button onclick="sendMessage()">Отправить</button>
+  
+  <div id="response"></div>
+
+  <script>
+    async function sendMessage() {
+      const message = document.getElementById("userInput").value;
+      const responseBox = document.getElementById("response");
+
+      responseBox.innerHTML = "⏳ Думаю...";
+      
+      const res = await fetch("/api/chat/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message })
+      });
+
+      const data = await res.json();
+      responseBox.innerHTML = "💬 Ответ: " + data.response;
+    }
+  </script>
+</body>
+</html>
